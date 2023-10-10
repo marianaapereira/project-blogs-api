@@ -1,7 +1,5 @@
 const express = require('express');
 
-// ...
-
 const app = express();
 
 // não remova ou mova esse endpoint
@@ -11,7 +9,7 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-// ...
+// rotas
 
 // É importante exportar a constante `app`,
 // para que possa ser utilizada pelo arquivo `src/server.js`
