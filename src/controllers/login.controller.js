@@ -14,21 +14,7 @@ const userIsInvalid = (user, email, password) => (
   || user.password !== password
 );
 
-const loginValidation = async (req, res) => {
-  const { email, password } = req.body;
-
-  // const user = { email: 'a', password: 'a' };
-
-  const user = await userService.getByLoginInfo(email, password);
-
-  console.log(`user ${user}`);
-
-  if (userIsInvalid(user, email, password)) {
-    return res.status(HTTP_BAD_REQUEST_STATUS).json({ 
-      message: 'Invalid fields', 
-    });
-  }
-
+const generateToken = (user) => {
   const jwtConfig = {
     expiresIn: '7d',
     algorithm: 'HS256',
@@ -40,9 +26,37 @@ const loginValidation = async (req, res) => {
     },
   }, secret, jwtConfig);
 
+  return token;
+};
+
+const loginValidation = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await userService.getByLoginInfo(email, password);
+
+  if (userIsInvalid(user, email, password)) {
+    return res.status(HTTP_BAD_REQUEST_STATUS).json({ 
+      message: 'Invalid fields', 
+    });
+  }
+
+  // const jwtConfig = {
+  //   expiresIn: '7d',
+  //   algorithm: 'HS256',
+  // };
+
+  // const token = jwt.sign({
+  //   data: {
+  //     userId: user.id,
+  //   },
+  // }, secret, jwtConfig);
+
+  const token = generateToken(user);
+
   return res.status(HTTP_OK_STATUS).json({ token });
 };
 
 module.exports = {
   loginValidation,
+  generateToken,
 };
