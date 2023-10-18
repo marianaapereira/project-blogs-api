@@ -1,7 +1,15 @@
 const userService = require('../services/user.service');
 const loginController = require('./login.controller');
 
-const { HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS } = require('../consts/httpStatusCodes');
+const { 
+  HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS, HTTP_OK_STATUS, 
+} = require('../consts/httpStatusCodes');
+
+const getAllUsers = async (_req, res) => {
+  const allUsers = await userService.getAllUsers();
+
+  return res.status(HTTP_OK_STATUS).json(allUsers); 
+};
 
 const addNewUser = async (req, res) => {
   const { displayName, email, password, image } = req.body;
@@ -22,5 +30,6 @@ const addNewUser = async (req, res) => {
 };
 
 module.exports = {
+  getAllUsers,
   addNewUser,
 };

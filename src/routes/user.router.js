@@ -6,6 +6,8 @@ const userController = require('../controllers/user.controller');
 
 const userInfoValidation = require('../middlewares/userInfoValidation.middleware');
 
+const tokenValidation = require('../auth/validateJWT');
+
 // rotas /user
 
 router.post(
@@ -15,6 +17,13 @@ router.post(
   userInfoValidation.validatePassword,
 
   userController.addNewUser,
+);
+
+router.get(
+  '/',
+  tokenValidation,
+
+  userController.getAllUsers,
 );
 
 module.exports = router;
