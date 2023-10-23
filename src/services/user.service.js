@@ -4,7 +4,7 @@ const getAllUsers = async () =>
   User.findAll({ attributes: { exclude: ['password'] } });
 
 const getByUserId = async (id) =>
-  User.findByPk(id);
+  User.findByPk(id, { attributes: { exclude: ['password'] } });
 
 const getByLoginInfo = async (email, password) => 
   User.findOne({ where: { email, password } });

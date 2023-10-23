@@ -4,7 +4,7 @@ const router = express.Router();
 
 const loginController = require('../controllers/login.controller');
 
-const { loginParamsValidation } = require('../middlewares/loginParamsValidation.middleware');
+const { loginParamsValidation } = require('../middlewares/loginParamsValidation.middlewares');
 
 // rotas /login
 

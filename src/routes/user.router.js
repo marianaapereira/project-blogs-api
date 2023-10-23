@@ -4,7 +4,7 @@ const router = express.Router();
 
 const userController = require('../controllers/user.controller');
 
-const userInfoValidation = require('../middlewares/userInfoValidation.middleware');
+const userInfoValidation = require('../middlewares/userInfoValidation.middlewares');
 
 const tokenValidation = require('../auth/validateJWT');
 
@@ -24,6 +24,13 @@ router.get(
   tokenValidation,
 
   userController.getAllUsers,
+);
+
+router.get(
+  '/:id',
+  tokenValidation,
+
+  userController.getByUserId,
 );
 
 module.exports = router;

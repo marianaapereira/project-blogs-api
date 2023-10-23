@@ -2,8 +2,22 @@ const userService = require('../services/user.service');
 const loginController = require('./login.controller');
 
 const { 
-  HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS, HTTP_OK_STATUS, 
+  HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS, HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS, 
 } = require('../consts/httpStatusCodes');
+
+const getByUserId = async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getByUserId(id);
+
+  if (!user) {
+    return res.status(HTTP_NOT_FOUND_STATUS).json({ 
+      message: 'User does not exist', 
+    });
+  }
+
+  return res.status(HTTP_OK_STATUS).json(user);
+};
 
 const getAllUsers = async (_req, res) => {
   const allUsers = await userService.getAllUsers();
@@ -30,6 +44,7 @@ const addNewUser = async (req, res) => {
 };
 
 module.exports = {
+  getByUserId,
   getAllUsers,
   addNewUser,
 };
