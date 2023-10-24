@@ -8,6 +8,8 @@ const { tokenValidation } = require('../auth/validateJWT');
 
 const newPostMiddlewares = require('../middlewares/newPostParamsValidation.middlewares');
 
+const updatePostMiddlewares = require('../middlewares/updatePostParamsValidation.middlewares');
+
 // rotas /post
 
 router.post(
@@ -30,6 +32,14 @@ router.get(
   tokenValidation,
 
   postController.getByPostId,
+);
+
+router.put(
+  '/:id',
+  tokenValidation,
+  updatePostMiddlewares.paramsCompletionValidation,
+
+  postController.updateBlogPost,
 );
 
 router.delete(

@@ -37,6 +37,22 @@ const getByPostId = async (req, res) => {
   }
 };
 
+const updateBlogPost = async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.user.id;
+
+  const blogpost = await postService.getByPostId(postId);
+
+  if (blogpost.userId !== userId) {
+    return res.status(HTTP_UNAUTHORIZED_STATUS).json({ message: 'Unauthorized user' });
+  }
+
+  const { title, content } = req.body;
+  const updatedBlogPost = await postService.updateBlogPost(postId, title, content);
+
+  return res.status(HTTP_OK_STATUS).json(updatedBlogPost);
+};
+
 const deletePost = async (req, res) => {
   try {
     const postId = req.params.id;
@@ -65,4 +81,5 @@ module.exports = {
   addNewBlogPost,
   getByPostId,
   deletePost,
+  updateBlogPost,
 };
