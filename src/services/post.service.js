@@ -2,6 +2,7 @@ const { BlogPost } = require('../models');
 
 const userService = require('./user.service');
 const postCategoryService = require('./postCategory.service');
+const { valueIsUndefined } = require('../middlewares/helperFunctions');
 
 const getAllPostsUsers = async (allPosts) => allPosts.map(
   async ({ dataValues }) => {
@@ -37,6 +38,31 @@ const getAllPosts = async () => {
   return allPostsWithCategories;
 };
 
+const getPostUser = async (post) => {
+  const postInfo = post.dataValues;
+  const { userId } = postInfo;
+  const { dataValues } = await userService.getByUserId(userId);
+
+  const postWithUser = { ...postInfo, user: dataValues };
+
+  return postWithUser;
+};
+
+const getByPostId = async (id) => {
+  const blogPost = await BlogPost.findByPk(id);
+
+  if (valueIsUndefined(blogPost)) {
+    throw new Error('Post does not exist');
+  }
+
+  const postWithUser = await getPostUser(blogPost);
+  const categories = await postCategoryService.getCategoriesByPostId(postWithUser.id);
+  
+  const postWithCategoriesInfo = { ...postWithUser, categories };
+
+  return postWithCategoriesInfo;
+};
+
 // const addNewBlogPost = async (title, content, categoryIds) => {
 //   const newBlogPost = BlogPost.create({ title, content });
 
@@ -45,5 +71,6 @@ const getAllPosts = async () => {
 
 module.exports = {
   getAllPosts,
+  getByPostId,
   // addNewBlogPost,
 };

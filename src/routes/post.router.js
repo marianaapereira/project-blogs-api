@@ -22,4 +22,11 @@ router.get(
   postController.getAllPosts,
 );
 
+router.get(
+  '/:id',
+  tokenValidation,
+
+  postController.getByPostId,
+);
+
 module.exports = router;
