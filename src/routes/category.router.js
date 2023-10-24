@@ -25,4 +25,11 @@ router.get(
   categoryController.getAllCategories,
 );
 
+router.get(
+  '/:id',
+  tokenValidation,
+
+  categoryController.getByCategoryId,
+);
+
 module.exports = router;

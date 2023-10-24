@@ -4,22 +4,22 @@ const router = express.Router();
 
 const postController = require('../controllers/post.controller');
 
-// const tokenValidation = require('../auth/validateJWT');
+const { tokenValidation } = require('../auth/validateJWT');
 
 // rotas /post
 
 router.post(
   '/',
-  // tokenValidation,
+  tokenValidation,
 
   postController.addNewBlogPost,
 );
 
-// router.get(
-//   '/',
-//   // tokenValidation,
+router.get(
+  '/',
+  tokenValidation,
 
-//   postController.getAllPosts,
-// );
+  postController.getAllPosts,
+);
 
 module.exports = router;
