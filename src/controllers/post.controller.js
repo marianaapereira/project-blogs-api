@@ -48,7 +48,11 @@ const updateBlogPost = async (req, res) => {
   }
 
   const { title, content } = req.body;
-  const updatedBlogPost = await postService.updateBlogPost(postId, title, content);
+  await postService.updateBlogPost(postId, title, content);
+
+  const updatedBlogPost = await postService.getByPostId(postId);
+
+  console.log(updateBlogPost);
 
   return res.status(HTTP_OK_STATUS).json(updatedBlogPost);
 };
