@@ -2,7 +2,7 @@ const express = require('express');
 
 const categoryRouter = require('./routes/category.router');
 const loginRouter = require('./routes/login.router');
-// const postRouter = require('./routes/post.router');
+const postRouter = require('./routes/post.router');
 const userRouter = require('./routes/user.router');
 
 const app = express();
@@ -20,7 +20,7 @@ app.use('/login', loginRouter);
 
 app.use('/categories', categoryRouter);
 
-// app.use('/post', postRouter);
+app.use('/post', postRouter);
 
 app.use('/user', userRouter);
 

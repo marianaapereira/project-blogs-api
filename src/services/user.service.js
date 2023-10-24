@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, BlogPost } = require('../models');
 
 const getAllUsers = async () => 
   User.findAll({ attributes: { exclude: ['password'] } });
@@ -15,10 +15,16 @@ const addNewUser = async (displayName, email, password, image) =>
 const getByEmail = async (email) => 
   User.findOne({ where: { email } });
 
+const deleteUser = async (id) => {
+  BlogPost.destroy({ where: { userId: id } });
+  User.destroy({ where: { id } });
+};
+
 module.exports = {
   getAllUsers,
   getByUserId,
   getByLoginInfo,
   addNewUser,
   getByEmail,
+  deleteUser,
 };

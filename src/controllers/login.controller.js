@@ -40,17 +40,6 @@ const loginValidation = async (req, res) => {
     });
   }
 
-  // const jwtConfig = {
-  //   expiresIn: '7d',
-  //   algorithm: 'HS256',
-  // };
-
-  // const token = jwt.sign({
-  //   data: {
-  //     userId: user.id,
-  //   },
-  // }, secret, jwtConfig);
-
   const token = generateToken(user);
 
   return res.status(HTTP_OK_STATUS).json({ token });

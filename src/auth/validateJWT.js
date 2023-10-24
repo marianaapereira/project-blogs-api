@@ -4,13 +4,13 @@ const userService = require('../services/user.service');
 
 const { HTTP_UNAUTHORIZED_STATUS } = require('../consts/httpStatusCodes');
 
-const secret = process.env.JWT_SECRET || 'seusecretdetoken';
+const secret = process.env.JWT_SECRET;
 
 function extractToken(bearerToken) {
   return bearerToken.split(' ')[1];
 }
 
-module.exports = async (req, res, next) => {
+const tokenValidation = async (req, res, next) => {
   const bearerToken = req.header('Authorization');
 
   if (!bearerToken) {
@@ -36,3 +36,5 @@ module.exports = async (req, res, next) => {
     return res.status(HTTP_UNAUTHORIZED_STATUS).json({ message: 'Expired or invalid token' });
   }
 };
+
+module.exports = { extractToken, tokenValidation };

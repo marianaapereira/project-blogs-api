@@ -2,27 +2,27 @@ const express = require('express');
 
 const router = express.Router();
 
-const categoryController = require('../controllers/category.controller');
+// const categoryController = require('../controllers/category.controller');
 
-const tokenValidation = require('../auth/validateJWT');
+// const tokenValidation = require('../auth/validateJWT');
 
-const { categoryNameValidation } = require('../middlewares/categoryNameValidation');
+// const { categoryNameValidation } = require('../middlewares/categoryNameValidation');
 
 // rotas /categories
 
-router.post(
-  '/',
-  tokenValidation,
-  categoryNameValidation,
+// router.post(
+//   '/',
+//   tokenValidation,
+//   categoryNameValidation,
 
-  categoryController.addNewCategory,
-);
+//   categoryController.addNewCategory,
+// );
 
-router.get(
-  '/',
-  tokenValidation,
+// router.get(
+//   '/',
+//   tokenValidation,
 
-  categoryController.getAllCategories,
-);
+//   categoryController.getAllCategories,
+// );
 
 module.exports = router;

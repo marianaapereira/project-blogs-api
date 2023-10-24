@@ -1,8 +1,11 @@
 const userService = require('../services/user.service');
 const loginController = require('./login.controller');
 
+const { decodeToken } = require('../auth/decodeToken');
+
 const { 
-  HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS, HTTP_OK_STATUS, HTTP_NOT_FOUND_STATUS, 
+  HTTP_CREATED_STATUS, HTTP_CONFLICT_STATUS, HTTP_OK_STATUS,
+  HTTP_NOT_FOUND_STATUS, HTTP_NO_CONTENT_STATUS, 
 } = require('../consts/httpStatusCodes');
 
 const getByUserId = async (req, res) => {
@@ -43,8 +46,19 @@ const addNewUser = async (req, res) => {
   return res.status(HTTP_CREATED_STATUS).json({ token });
 };
 
+const deleteMe = async (req, res) => {
+  const token = req.header('Authorization');
+
+  const currentUserId = decodeToken(token);
+
+  await userService.deleteUser(currentUserId);
+
+  return res.status(HTTP_NO_CONTENT_STATUS).json();
+};
+
 module.exports = {
   getByUserId,
   getAllUsers,
   addNewUser,
+  deleteMe,
 };

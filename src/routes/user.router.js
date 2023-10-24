@@ -6,7 +6,7 @@ const userController = require('../controllers/user.controller');
 
 const userInfoValidation = require('../middlewares/userInfoValidation.middlewares');
 
-const tokenValidation = require('../auth/validateJWT');
+const { tokenValidation } = require('../auth/validateJWT');
 
 // rotas /user
 
@@ -31,6 +31,13 @@ router.get(
   tokenValidation,
 
   userController.getByUserId,
+);
+
+router.delete(
+  '/me',
+  tokenValidation,
+
+  userController.deleteMe,
 );
 
 module.exports = router;

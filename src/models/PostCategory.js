@@ -2,8 +2,12 @@ const { DataTypes } = require("sequelize");
 
 const PostCategoryModel = (sequelize, DataTypes) => {
   const PostCategory = sequelize.define('PostCategory', {
-    post_id: DataTypes.INTEGER,
-    category_id: DataTypes.INTEGER,
+    // post_id: DataTypes.INTEGER,
+    // category_id: DataTypes.INTEGER,
+  }, {
+      timestamps: false,
+      underscored: true,
+      tableName: 'posts_categories',
   });
 
   PostCategory.associate = (models) => {
