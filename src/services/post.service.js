@@ -63,13 +63,15 @@ const getByPostId = async (id) => {
   return postWithCategoriesInfo;
 };
 
-const addNewBlogPost = async (title, content, userId) => {
-  const newBlogPost = await BlogPost.create({ title, content, userId });
+const addNewBlogPost = async ({ title, content, userId, updated, published }) => {
+  const { dataValues } = await BlogPost.create({ title, content, userId, updated, published });
 
-  const { dataValues } = await userService.getByUserId(userId);
-  const postWithUser = { ...newBlogPost, user: dataValues };
+  console.log(dataValues);
 
-  return postWithUser; 
+  // const { dataValues } = await userService.getByUserId(userId);
+  // const postWithUser = { ...newBlogPost, user: dataValues };
+
+  return dataValues; 
 };
 
 const updateBlogPost = async (postId, title, content) => {
