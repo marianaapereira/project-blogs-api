@@ -6,7 +6,7 @@ const categoryController = require('../controllers/category.controller');
 
 const { tokenValidation } = require('../auth/validateJWT');
 
-const { categoryNameValidation } = require('../middlewares/categoryNameValidation');
+const { categoryNameValidation } = require('../middlewares/categoryNameValidation.middlewares');
 
 // rotas / categories;
 

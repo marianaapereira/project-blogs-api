@@ -5,7 +5,10 @@ const emailIsValid = (email) => {
   return regexEmail.test(email);
 };
 
+const paramIsInvalid = (param) => valueIsUndefined(param) || param === '';
+
 module.exports = {
   valueIsUndefined,
   emailIsValid,
+  paramIsInvalid,
 };

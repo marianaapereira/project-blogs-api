@@ -63,14 +63,22 @@ const getByPostId = async (id) => {
   return postWithCategoriesInfo;
 };
 
-// const addNewBlogPost = async (title, content, categoryIds) => {
-//   const newBlogPost = BlogPost.create({ title, content });
+const addNewBlogPost = async (title, content, userId) => {
+  const newBlogPost = await BlogPost.create({ title, content, userId });
 
-//   // const 
-// };
+  const { dataValues } = await userService.getByUserId(userId);
+  const postWithUser = { ...newBlogPost, user: dataValues };
+
+  return postWithUser; 
+};
+
+const deletePost = async (id) => {
+  BlogPost.destroy({ where: { id } });
+};
 
 module.exports = {
   getAllPosts,
   getByPostId,
-  // addNewBlogPost,
+  addNewBlogPost,
+  deletePost,
 };

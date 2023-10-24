@@ -17,6 +17,10 @@ const getCategoriesByPostId = async (id) => {
   return allPostsWithCategoriesInfo;
 };
 
+// const addPostCategories = async (postId, categoriesIds) => {
+
+// }
+
 module.exports = {
   getCategoriesByPostId,
 };
