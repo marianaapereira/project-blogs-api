@@ -2,8 +2,8 @@ const { DataTypes } = require("sequelize");
 
 const PostCategoryModel = (sequelize, DataTypes) => {
   const PostCategory = sequelize.define('PostCategory', {
-    // post_id: DataTypes.INTEGER,
-    // category_id: DataTypes.INTEGER,
+    postId: DataTypes.INTEGER,
+    categoryId: DataTypes.INTEGER,
   }, {
     timestamps: false,
     underscored: true,
