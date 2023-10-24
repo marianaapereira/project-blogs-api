@@ -1,7 +1,10 @@
-const { BlogPost } = require('../models');
+const { Op } = require('sequelize');
+
+const { sequelize, BlogPost, User, Category, PostCategory } = require('../models');
 
 const userService = require('./user.service');
 const postCategoryService = require('./postCategory.service');
+
 const { valueIsUndefined } = require('../middlewares/helperFunctions');
 
 const getAllPostsUsers = async (allPosts) => allPosts.map(
@@ -63,15 +66,27 @@ const getByPostId = async (id) => {
   return postWithCategoriesInfo;
 };
 
-const addNewBlogPost = async ({ title, content, userId, updated, published }) => {
-  const { dataValues } = await BlogPost.create({ title, content, userId, updated, published });
+const addNewBlogPost = async (title, content, userId, categoryIds) => {
+  const newBlogPost = await BlogPost.create(
+    { 
+      title, 
+      content, 
+      userId, 
+      published: new Date(), 
+      updated: new Date(), 
+    },
+  );
 
-  console.log(dataValues);
+  await Promise.all(
+    categoryIds.map(async (categoryId) => {
+      await PostCategory.create({
+        postId: newBlogPost.id,
+        categoryId,
+      });
+    }),
+  );
 
-  // const { dataValues } = await userService.getByUserId(userId);
-  // const postWithUser = { ...newBlogPost, user: dataValues };
-
-  return dataValues; 
+  return newBlogPost; 
 };
 
 const updateBlogPost = async (postId, title, content) => {
@@ -87,10 +102,32 @@ const deletePost = async (id) => {
   BlogPost.destroy({ where: { id } });
 };
 
+const getPostBySearch = async (query) => BlogPost.findAll({
+  where: {
+    [Op.or]: [
+      { title: { [Op.like]: `%${query}%` } },
+      { content: { [Op.like]: `%${query}%` } }],
+  },
+  include: [
+    {
+      model: User,
+      as: 'user',
+      attributes: { exclude: ['password'] },
+    },
+    {
+      model: Category,
+      as: 'categories',
+      where: { postId: sequelize.col('BlogPost.id') },
+      through: { attributes: [] },
+    },
+  ],
+});
+
 module.exports = {
   getAllPosts,
   getByPostId,
-  addNewBlogPost,
   deletePost,
   updateBlogPost,
+  getPostBySearch,
+  addNewBlogPost,
 };

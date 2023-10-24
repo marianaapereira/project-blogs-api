@@ -1,11 +1,13 @@
 const postService = require('../services/post.service');
 const categoryService = require('../services/category.service');
+// const postCategoryService = require('../services/postCategory.service');
 
 const { HTTP_OK_STATUS, HTTP_CREATED_STATUS,
   HTTP_NOT_FOUND_STATUS, 
   HTTP_NO_CONTENT_STATUS, 
   HTTP_UNAUTHORIZED_STATUS, 
-  HTTP_BAD_REQUEST_STATUS } = require('../consts/httpStatusCodes');
+  HTTP_BAD_REQUEST_STATUS, 
+} = require('../consts/httpStatusCodes');
 
 const { valueIsUndefined } = require('../middlewares/helperFunctions');
 
@@ -28,34 +30,27 @@ const getByPostId = async (req, res) => {
 };
 
 const categoryIdsValidation = async (categoryIds) => {
-  const allCategories = await categoryService.getAllCategories();
+  const allCategories = await categoryService.getAllCategoriesIds();
 
-  categoryIds.forEach((categoryId) => {
-    const test = allCategories.some((category) => category.id !== categoryId);
+  // console.log(`allCategories ${allCategories}`);
+  // console.log(`categoryIds ${categoryIds}`);
 
-    if (test) {
-      throw new Error('one or more "categoryIds" not found');
-    }
-  });
+  const unknownCategory = categoryIds.some((categoryId) => !allCategories.includes(categoryId));
+
+  if (unknownCategory) {
+    throw new Error('one or more "categoryIds" not found');
+  }
 };
 
 const addNewBlogPost = async (req, res) => {
   try {
-    const userId = req.user.id;
-  
+    // const userId = req.user.id;
+    const userId = req.user.dataValues.id;
     const { title, content, categoryIds } = req.body;
   
     await categoryIdsValidation(categoryIds);
   
-    const newBlogPost = {
-      title,
-      content,
-      userId,
-      updated: new Date(),
-      published: new Date(),
-    };
-  
-    const createdBlogPost = await postService.addNewBlogPost(newBlogPost);
+    const createdBlogPost = await postService.addNewBlogPost(title, content, userId, categoryIds);
     
     return res.status(HTTP_CREATED_STATUS).json(createdBlogPost); 
   } catch ({ message }) {
@@ -78,7 +73,7 @@ const updateBlogPost = async (req, res) => {
 
   const updatedBlogPost = await postService.getByPostId(postId);
 
-  console.log(updateBlogPost);
+  // console.log(updateBlogPost);
 
   return res.status(HTTP_OK_STATUS).json(updatedBlogPost);
 };
@@ -106,10 +101,24 @@ const deletePost = async (req, res) => {
   }
 };
 
+const getPostBySearch = async (req, res) => {
+  const searchTerm = req.query.q;
+
+  if (!searchTerm) {
+    const allBlogPosts = await postService.getAllPosts();
+    return res.status(HTTP_OK_STATUS).json(allBlogPosts);
+  }
+
+  const searchedPosts = await postService.getPostBySearch(searchTerm);
+
+  res.status(HTTP_OK_STATUS).json(searchedPosts);
+};
+
 module.exports = {
   getAllPosts,
   addNewBlogPost,
   getByPostId,
   deletePost,
   updateBlogPost,
+  getPostBySearch,
 };

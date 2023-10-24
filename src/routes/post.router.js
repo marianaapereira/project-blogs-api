@@ -49,4 +49,11 @@ router.delete(
   postController.deletePost,
 );
 
+router.get(
+  '/search',
+  tokenValidation,
+
+  postController.getPostBySearch,
+);
+
 module.exports = router;
