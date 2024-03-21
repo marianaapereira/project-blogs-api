@@ -8,7 +8,7 @@ Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua cr
 - quais arquivos/pastas foram desenvolvidos pela Trybe.
 -->
 
-# Blogs API
+# Blogs API [![wakatime](https://wakatime.com/badge/user/d430e1a8-f726-4da0-96fd-ac14f7a37701/project/018b0b12-1111-4dd1-9ff2-eab075404416.svg)](https://wakatime.com/badge/user/d430e1a8-f726-4da0-96fd-ac14f7a37701/project/018b0b12-1111-4dd1-9ff2-eab075404416)
 
 Projeto realizado com o objetivo de consolidar os estudos sobre desenvolvimento de APIs com banco de dados, composto por uma API e um banco de dados para a produção de conteúdo para um blog.
 
